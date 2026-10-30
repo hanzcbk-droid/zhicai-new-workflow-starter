@@ -1,0 +1,30 @@
+{
+  "project": "{english-name}",
+  "last_updated": "{YYYY-MM-DD}",
+  "rules": {
+    "single_active_feature": true,
+    "awaiting_review_requires_evidence": true,
+    "passing_requires_user_ok": true
+  },
+  "status_legend": {
+    "not_started": "还没开始",
+    "in_progress": "正在做，同一时间只能有一个",
+    "blocked": "被卡住了，原因写在 notes",
+    "awaiting_review": "自检通过、证据已记录，等用户说行",
+    "passing": "用户已说行",
+    "cancelled": "用户决定不做了，原因写在 notes"
+  },
+  "features": [
+    {
+      "id": "F-01",
+      "priority": 1,
+      "title": "{任务名}",
+      "user_visible_behavior": "{做完后用户能看到或拿到什么}",
+      "out_of_scope": ["{这个任务明确不碰的东西}"],
+      "verification": ["{能一条条执行的检查步骤}"],
+      "evidence": [],
+      "status": "not_started",
+      "notes": ""
+    }
+  ]
+}
