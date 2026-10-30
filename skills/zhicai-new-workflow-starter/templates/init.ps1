@@ -1,5 +1,5 @@
-# 启动检查 · init.ps1 —— 只检查，不修改任何文件
-Set-Location -Path $PSScriptRoot
+﻿# 启动检查 · init.ps1 —— 只检查，不修改任何文件
+Set-Location -LiteralPath $PSScriptRoot
 $fail = $false
 function Ok($m)  { Write-Host "[OK]   $m" }
 function Bad($m) { Write-Host "[FAIL] $m"; $script:fail = $true }
@@ -7,12 +7,19 @@ function Bad($m) { Write-Host "[FAIL] $m"; $script:fail = $true }
 # 1. 必备文件
 $required = @("AGENTS.md","feature_list.json","progress.md","session-handoff.md","DECISIONS.md",
               "docs/harness/verification.md","docs/harness/closing.md","docs/harness/lessons.md")
-foreach ($f in $required) { if (Test-Path $f -PathType Leaf) { Ok "存在 $f" } else { Bad "缺少 $f" } }
-if (Test-Path "deliverables" -PathType Container) { Ok "存在 deliverables/" } else { Bad "缺少 deliverables/" }
+foreach ($f in $required) { if (Test-Path -LiteralPath $f -PathType Leaf) { Ok "存在 $f" } else { Bad "缺少 $f" } }
+# 建档时替换为全部已确认的成果目录；单引号字符串内的单引号写成两个，不留空列表。
+$deliverableDirs = @('deliverables')
+if ($deliverableDirs.Count -eq 0) { Bad "未配置实际成果目录" }
+foreach ($d in $deliverableDirs) {
+  if ($d -isnot [string] -or [string]::IsNullOrWhiteSpace($d)) { Bad "成果目录路径为空或不是文字" }
+  elseif (Test-Path -LiteralPath $d -PathType Container) { Ok "存在成果目录 $d" }
+  else { Bad "缺少成果目录 $d" }
+}
 
 # 2. 任务清单：格式、状态、一次一件、有证据
 try {
-  $raw = Get-Content feature_list.json -Raw -Encoding UTF8 -ErrorAction Stop
+  $raw = Get-Content -LiteralPath feature_list.json -Raw -Encoding UTF8 -ErrorAction Stop
   if (-not $raw.TrimStart().StartsWith('{')) { throw "任务清单根节点必须是对象" }
   $d = $raw | ConvertFrom-Json -ErrorAction Stop
   if ($null -eq $d -or $d -isnot [pscustomobject] -or $d.features -isnot [array]) {
@@ -61,13 +68,13 @@ $placeholders = @(
   '{项目中文名}', '{english-name}', '{一句话目标}', '{交付物}',
   '{一次性项目 / 定期重复的工作流 / 改到达标为止}',
   '{bash init.sh / powershell -ExecutionPolicy Bypass -File .\init.ps1 / 按 docs/harness/startup-check.md 逐条检查}',
-  '{项目特有约束}', '{哪次出错或哪个决定}', '{标准 1}', '{标准 2}', '{标准 3}',
+  '{项目特有约束}', '{哪次出错或哪个决定}', '{业务目录与成果位置}', '{标准 1}', '{标准 2}', '{标准 3}',
   '{按项目类型写：命名、格式、存放位置、禁止出现的东西}'
 )
 foreach ($f in @("AGENTS.md","docs/harness/verification.md")) {
-  if (Test-Path $f -PathType Leaf) {
+  if (Test-Path -LiteralPath $f -PathType Leaf) {
     foreach ($placeholder in $placeholders) {
-      if (Select-String -Path $f -Pattern $placeholder -SimpleMatch -Quiet) { Bad "$f 里还有未填写的模板项: $placeholder" }
+      if (Select-String -LiteralPath $f -Pattern $placeholder -SimpleMatch -Quiet) { Bad "$f 里还有未填写的模板项: $placeholder" }
     }
   }
 }

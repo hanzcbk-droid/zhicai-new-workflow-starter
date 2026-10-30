@@ -13,7 +13,21 @@ for f in AGENTS.md feature_list.json progress.md session-handoff.md DECISIONS.md
          docs/harness/verification.md docs/harness/closing.md docs/harness/lessons.md; do
   if [ -f "$f" ]; then ok "存在 $f"; else bad "缺少 $f"; fi
 done
-if [ -d deliverables ]; then ok "存在 deliverables/"; else bad "缺少 deliverables/"; fi
+# 建档时替换为全部已确认的成果目录；每项用安全的 Bash 字符串引用，不留空列表。
+deliverable_dirs=('deliverables')
+if [ "${#deliverable_dirs[@]}" -eq 0 ]; then
+  bad "未配置实际成果目录"
+else
+  for d in "${deliverable_dirs[@]}"; do
+    if [ -z "${d//[[:space:]]/}" ]; then
+      bad "成果目录路径为空"
+    elif [ -d "$d" ]; then
+      ok "存在成果目录 $d"
+    else
+      bad "缺少成果目录 $d"
+    fi
+  done
+fi
 
 # 2. 任务清单：格式、状态、一次一件、有证据
 if command -v python3 >/dev/null 2>&1; then
@@ -66,7 +80,7 @@ placeholders=(
   '{项目中文名}' '{english-name}' '{一句话目标}' '{交付物}'
   '{一次性项目 / 定期重复的工作流 / 改到达标为止}'
   '{bash init.sh / powershell -ExecutionPolicy Bypass -File .\init.ps1 / 按 docs/harness/startup-check.md 逐条检查}'
-  '{项目特有约束}' '{哪次出错或哪个决定}'
+  '{项目特有约束}' '{哪次出错或哪个决定}' '{业务目录与成果位置}'
   '{标准 1}' '{标准 2}' '{标准 3}'
   '{按项目类型写：命名、格式、存放位置、禁止出现的东西}'
 )

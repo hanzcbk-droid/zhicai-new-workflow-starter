@@ -21,4 +21,4 @@
 - 碰到这些情况必须马上停：{比如要花钱、要删东西、要对外发布}
 
 ## 记录写在哪
-每轮结果写进 progress.md 的会话记录；需要单独存档的，放进 deliverables/loop-runs/{YYYY-MM-DD}.md。
+每轮结果写进 progress.md 的会话记录；需要单独存档时，使用项目已确认的实际存档位置，在文件地图写清。采用默认成果目录的项目可用 deliverables/loop-runs/{YYYY-MM-DD}.md，不为套用例子再复制一份成果。
