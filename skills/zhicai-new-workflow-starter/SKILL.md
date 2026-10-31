@@ -1,9 +1,15 @@
 ---
 name: zhicai-new-workflow-starter
-description: "为需要持续推进、积累资料或跨对话接续的项目建立、接管或检查工作流。按实际成果与业务规划目录，建立项目入口、任务、进度、交接及检查规则；已有项目优先沿用目录，也支持明确要求的占位轻启动。普通问答和简单临时处理不默认建立完整项目。Triggers: project workflow, scaffold project, set up AGENTS.md, audit project harness."
+description: "知材 · 项目文件夹 Harness 化。为需要持续推进、积累资料或跨对话接续的项目建立、接管或检查工作流。按实际成果与业务规划目录，建立项目入口、任务、进度、交接及检查规则；已有项目优先沿用目录，也支持明确要求的占位轻启动。普通问答和简单临时处理不默认建立完整项目。Triggers: project workflow, scaffold project, set up AGENTS.md, audit project harness."
 ---
 
-# 知材 · 新工作流建立 v2.0
+# 知材 · 项目文件夹 Harness 化
+
+> 让文件夹有记忆，让项目持续进化
+
+版本：v2.0；英文标识：`zhicai-new-workflow-starter`。
+
+记忆来自目标、任务、进度、决定与交接等持久记录；进化来自复盘经验沉淀及经用户确认后的规则改进。按项目约定读取和维护文件，不把保存了模板当成已记录真实进展。
 
 目标：建好之后，任何智能体开一个全新对话，只读项目文件夹里的文件，就能答出五件事：这是什么项目、文件怎么组织、怎么开工、怎么验收、现在做到哪了。
 
